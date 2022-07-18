@@ -1,16 +1,25 @@
 import itertools
 import numpy as np
 
-iter = [ [1,2], [0,1,2,3], [0,1] ] #number of possible children, first entry can't be zero
+iter = [ [1,2], [0,1,2,3], [0,1], [0,1,2],[0,1] ] #number of possible children, first entry can't be zero
 
 fg = len(iter[0]) #number of first gen children
+sg = len(iter[1])-1 #number of second gen children
+tg = len(iter[2])-1 #number of third gen children
+
 l = len(iter) #number of parents in tree ~ non leaves
 
 for t in itertools.product(*iter): #all possible combos of iter
     #print (t)
     
-    m = t[0] #first entry of each subtree vector
+    fm = t[0] #first entry of each subtree vector
+    sm = t[1] #second entry of each subtree vector
+    tm = t[2] #third entry of each subtree vector
     
-    n = np.count_nonzero(t[1:fg+1]) #number of nonzero first gen children ~ same check would need to be done for every gen
+    fn = np.count_nonzero(t[1:fg+1]) #number of nonzero first gen children
     
-    print([s for s in t if n<=m]) #printing subtree vectors that have enough parents for first gen children
+    sn = np.count_nonzero(t[1+fg:sg+1]) #number of nonzero second gen children
+    
+    tn = np.count_nonzero(t[1+fg+sg:tg+1]) #number of nonzero third gen children
+    
+    print([s for s in t if fn<=fm and sn<=sm and tn<=tm]) #printing subtree vectors that have enough parents for first, second, third gen children
