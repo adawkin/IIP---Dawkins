@@ -1,38 +1,45 @@
 import itertools
 import numpy as np
+import math
 
-iter = [ [1], [0,1], [0,1], [0,1], [0,1] ] #number of possible children, first entry can't be zero
-
-fg = len(iter[0]) #number of first gen children
-sg = len(iter[1])-1 #number of second gen children
-tg = len(iter[2])-1 #number of third gen children
-fog = len(iter[3])-1 #number of fourth gen children 
-fig = len(iter[4])-1 #number of fifth gen children
-
+iter = [ [1, 2, 3, 4], [0], [0], [0], [0] ] #number of possible children, first entry can't be zero
+p = [1, 2, 3, 2]
 
 l = len(iter) #number of parents in tree ~ non leaves
 
+T = np.zeros(l)
+g = np.zeros(l)
+gen = np.zeros(l)
+
+for i in range(0, len(iter)):
+    g[i] = len(iter[i])
+    T[i] = g[i]
+    for i in range(0,1):
+        gen[i] = g[i]
+    for i in range(1,len(iter)):
+        gen[i] = g[i]-1
+T = T.astype(int)
+gen = gen.astype(int)
+
 for t in itertools.product(*iter): #all possible combos of iter
     
-    fm = t[0] #first entry of each subtree vector
-    sm = t[1] #second entry of each subtree vector
-    tm = t[2] #third entry of each subtree vector
-    fom = t[3] #fourth entry of each subtree vector
-    fim = t[4] #fifth entry of each subtree vector
+    fn = np.count_nonzero(t[0:T[0]]) #number of nonzero first gen children
     
-    fn = np.count_nonzero(t[0:fg]) #number of nonzero first gen children
-    print(fn)
+    sn = np.count_nonzero(t[T[0]:T[1]+T[0]]) #number of nonzero second gen children
     
-    sn = np.count_nonzero(t[fg:sg+fg]) #number of nonzero second gen children
-    print(sn)
+    tn = np.count_nonzero(t[T[1]+T[0]:T[2]+T[1]+T[0]]) #number of nonzero third gen children
     
-    tn = np.count_nonzero(t[sg+fg:tg+sg+fg]) #number of nonzero third gen children
-    print(tn)
+    fon = np.count_nonzero(t[T[2]+T[1]+T[0]:T[3]+T[2]+T[1]+T[0]]) #number of nonzero fourth gen children
     
-    fon = np.count_nonzero(t[tg+sg+fg:fog+tg+sg+fg]) #number of nonzero fourth gen children
-    print(fon)
+    fin = np.count_nonzero(t[T[3]+T[2]+T[1]+T[0]:T[4]+T[3]+T[2]+T[1]+T[0]]) #number of nonzero fifth gen children
     
-    fin = np.count_nonzero(t[fog+tg+sg+fg:len(t)]) #number of nonzero fifth gen children
-    print(fin)
+    t = [s for s in t if sn<=t[0] and tn<=t[2] and fon<=t[3] and fin<=t[4]]
     
-    print([s for s in t if sn<=fm and tn<=sm and fon<=tm and fin<=fom]) #printing subtree vectors that have enough parents for 1-5 gen children
+    if len(t)>0:
+        print("Subtree vector:", t) #printing nonempty subtree vectors that have enough parents
+        cost = np.sum(t)
+        print("cost = ", cost, "*c")
+        
+        #for num in range(len(p)):
+        #prize = sum(p[num])
+        #print("prize = ", prize)
