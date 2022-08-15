@@ -1,0 +1,70 @@
+import itertools
+import numpy as np
+import math
+
+N = 15
+n = N-1
+v = np.ones(N)
+
+o = 3 #number of edges wanted in subtree
+
+def generate_binary_strings(bit_count): #generate all possible subtree vectors
+    binary_strings = []
+    def genbin(n, bs=''):
+        if len(bs) == n:
+            binary_strings.append('1'+bs)
+        else:
+            genbin(n, bs + '0')
+            genbin(n, bs + '1')
+
+    genbin(bit_count)
+    return binary_strings
+
+S = generate_binary_strings(n)
+
+def digsum(n): #sum up digits of a number
+    sum = 0
+    for digit in str(n): 
+      sum += int(digit)      
+    return sum
+
+check_s = []
+valid_s = []
+
+for s in S: #finding subtrees with desired number of edges
+    d = digsum(s)
+    if d == o+1:
+        check_s.append(s)
+        
+for s in check_s:
+    q = s[14]
+    qq = s[6]
+    r = s[13]
+    rr = s[6]
+    t = s[12]
+    tt = s[5]
+    u = s[11]
+    uu = s[5]
+    v = s[10]
+    vv = s[4]
+    w= s[9]
+    ww = s[4]
+    x = s[8]
+    xx = s[3]
+    y = s[7]
+    yy = s[3]
+    z = s[6]
+    zz = s[2]
+    a = s[5]
+    aa = s[2]
+    b = s[4]
+    bb = s[1]
+    c = s[3]
+    cc = s[1]
+    if q<=qq and r<=rr and t<=tt and u<=uu and v<=vv and w<=ww and x<=xx and y<=yy and z<=zz and a<=aa and b<=bb and c<=cc:
+        valid_s.append(s)
+
+L = len(valid_s)
+         
+print(L)
+print(valid_s) 
