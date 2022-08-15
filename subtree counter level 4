@@ -1,0 +1,102 @@
+import itertools
+import numpy as np
+import math
+
+N = 31
+n = N-1
+v = np.ones(N)
+
+o = 1 #number of edges wanted in subtree
+
+def generate_binary_strings(bit_count): #generate all possible subtree vectors
+    binary_strings = []
+    def genbin(n, bs=''):
+        if len(bs) == n:
+            binary_strings.append('1'+bs)
+        else:
+            genbin(n, bs + '0')
+            genbin(n, bs + '1')
+
+    genbin(bit_count)
+    return binary_strings
+
+S = generate_binary_strings(n)
+
+def digsum(n): #sum up digits of a number
+    sum = 0
+    for digit in str(n): 
+      sum += int(digit)      
+    return sum
+
+check_s = []
+valid_s = []
+
+for s in S: #finding subtrees with desired number of edges
+    d = digsum(s)
+    if d == o+1:
+        check_s.append(s)
+        
+for s in check_s:
+    Q = s[30]
+    QQ = s[14]
+    R = s[29]
+    RR = s[14]
+    T = s[28]
+    TT = s[13]
+    U = s[27]
+    UU = s[13]
+    V = s[26]
+    VV = s[12]
+    W = s[25]
+    WW = s[12]
+    X = s[24]
+    XX = s[11]
+    Y = s[23]
+    YY = s[11]
+    Z = s[22]
+    ZZ = s[10]
+    A = s[21]
+    AA = s[10]
+    B = s[20]
+    BB = s[9]
+    C = s[19]
+    CC = s[9]
+    D = s[18]
+    DD = s[8]
+    E = s[17]
+    EE = s[8]
+    F = s[16]
+    FF = s[7]
+    G = s[15]
+    GG = s[7]
+    q = s[14]
+    qq = s[6]
+    r = s[13]
+    rr = s[6]
+    t = s[12]
+    tt = s[5]
+    u = s[11]
+    uu = s[5]
+    v = s[10]
+    vv = s[4]
+    w= s[9]
+    ww = s[4]
+    x = s[8]
+    xx = s[3]
+    y = s[7]
+    yy = s[3]
+    z = s[6]
+    zz = s[2]
+    a = s[5]
+    aa = s[2]
+    b = s[4]
+    bb = s[1]
+    c = s[3]
+    cc = s[1]
+    if Q<=QQ and R<=RR and T<=TT and U<=UU and V<=VV and W<=WW and X<=XX and Y<=YY and Z<=ZZ and A<=AA and B<=BB and C<=CC and D<=DD and E<=EE and F<=FF and G<=GG and q<=qq and r<=rr and t<=tt and u<=uu and v<=vv and w<=ww and x<=xx and y<=yy and z<=zz and a<=aa and b<=bb and c<=cc:
+        valid_s.append(s)
+
+L = len(valid_s)
+         
+print(L)
+print(valid_s)   
